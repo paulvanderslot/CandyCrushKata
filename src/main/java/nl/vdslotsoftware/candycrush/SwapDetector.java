@@ -5,11 +5,9 @@ import java.util.Collection;
 public class SwapDetector {
 
     private CandySwapper candySwapper;
-    private CrushDetector crushDetector;
 
-    SwapDetector(CandySwapper candySwapper, CrushDetector crushDetector) {
+    SwapDetector(CandySwapper candySwapper) {
         this.candySwapper = candySwapper;
-        this.crushDetector = crushDetector;
     }
 
     public boolean isSwapPossible(GameBoard gameBoard) {
@@ -19,6 +17,6 @@ public class SwapDetector {
 
     private boolean isCrushPossibleAfterSwap(GameBoard gameBoard, Neighbours neighbours) {
         GameBoard newGameBoard = candySwapper.swap(neighbours, gameBoard);
-        return crushDetector.isCrushPossible(newGameBoard);
+        return newGameBoard.isCrushPossible();
     }
 }

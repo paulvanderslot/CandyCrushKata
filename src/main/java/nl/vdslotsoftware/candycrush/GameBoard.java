@@ -25,4 +25,31 @@ public class GameBoard {
             .collect(toList());
     }
 
+    public boolean isCrushPossible() {
+        Candy[] firstRow = candyRows[0];
+
+        return containsThreeInARow(firstRow);
+    }
+
+    private boolean containsThreeInARow(Candy[] candies) {
+        int candyCounter = 1;
+        Candy previous = null;
+
+        for (Candy candy : candies) {
+            if (previous != null && previous.equals(candy)) {
+                candyCounter++;
+                if (candyCounter == 3) {
+                    return true;
+                }
+            }
+            else {
+                candyCounter = 1;
+            }
+
+            previous = candy;
+        }
+
+        return false;
+    }
+
 }
