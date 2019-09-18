@@ -3,6 +3,6 @@ package nl.vdslotsoftware.candycrush;
 public class CandySwapper {
 
     GameBoard swap(Neighbours neighbours, GameBoard gameBoard) {
-        return gameBoard;
+        return gameBoard.swap(neighbours);
     }
 }

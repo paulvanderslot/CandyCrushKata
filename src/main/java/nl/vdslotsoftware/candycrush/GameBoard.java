@@ -2,12 +2,13 @@ package nl.vdslotsoftware.candycrush;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.IntStream;
 
 public class GameBoard {
 
-    private Candy[][] candyRows;
+    private final Candy[][] candyRows;
 
     private GameBoard(Candy[][] candyRows) {
         this.candyRows = candyRows;
@@ -21,7 +22,7 @@ public class GameBoard {
         Candy[] firstRow = candyRows[0];
 
         return IntStream.range(0, (firstRow.length - 1)).boxed()
-            .map(colNum -> new Neighbours(firstRow[colNum], firstRow[colNum + 1]))
+            .map(colNum -> new Neighbours(new CandyLocation(0, colNum), new CandyLocation(0, colNum + 1)))
             .collect(toList());
     }
 
@@ -51,5 +52,51 @@ public class GameBoard {
 
         return false;
     }
+
+    public GameBoard swap(Neighbours neighbours) {
+        Candy[][] candyRowsCopy = candyRows.clone();
+
+        Candy candy1 = getCandy(neighbours.location1);
+        Candy candy2 = getCandy(neighbours.location2);
+
+        setCandy(candyRowsCopy, neighbours.location1, candy2);
+        setCandy(candyRowsCopy, neighbours.location2, candy1);
+
+        return GameBoard.create(candyRowsCopy);
+    }
+
+    private void setCandy(Candy[][] candyRowsCopy, CandyLocation location, Candy candy) {
+        candyRowsCopy[location.rowNumber][location.columNumber] = candy;
+    }
+
+    private Candy getCandy(CandyLocation location) {
+        return candyRows[location.rowNumber][location.columNumber];
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Arrays.deepHashCode(candyRows);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        GameBoard other = (GameBoard) obj;
+        return Arrays.deepEquals(candyRows, other.candyRows);
+    }
+
+    @Override
+    public String toString() {
+        return "GameBoard [candyRows=" + Arrays.toString(candyRows) + "]";
+    }
+    
 
 }

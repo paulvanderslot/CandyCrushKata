@@ -1,9 +1,13 @@
 package nl.vdslotsoftware.candycrush;
 
 public enum Candy {
-	RED, BLUE, YELLOW, GREEN;
+    RED,
+    BLUE,
+    YELLOW,
+    GREEN;
 
-	public boolean canSwap() {
-		return false;
-	}
+    public boolean canSwap() {
+        return false;
+    }
+
 }
