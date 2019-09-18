@@ -18,7 +18,17 @@ public class GameBoard {
         return new GameBoard(candyRows);
     }
 
-    public Collection<Neighbours> getNeighbours() {
+    public boolean isMovePossible() {
+        Collection<Neighbours> neighboursCollection = getNeighbours();
+        return neighboursCollection.stream().anyMatch(this::isCrushPossibleAfterSwap);
+    }
+
+    private boolean isCrushPossibleAfterSwap(Neighbours neighbours) {
+        GameBoard newGameBoard = swap(neighbours);
+        return newGameBoard.isCrushPossible();
+    }
+
+    private Collection<Neighbours> getNeighbours() {
         Candy[] firstRow = candyRows[0];
 
         return IntStream.range(0, (firstRow.length - 1)).boxed()
@@ -28,7 +38,6 @@ public class GameBoard {
 
     public boolean isCrushPossible() {
         Candy[] firstRow = candyRows[0];
-
         return containsThreeInARow(firstRow);
     }
 
@@ -46,7 +55,6 @@ public class GameBoard {
             else {
                 candyCounter = 1;
             }
-
             previous = candy;
         }
 
@@ -54,7 +62,7 @@ public class GameBoard {
     }
 
     public GameBoard swap(Neighbours neighbours) {
-        Candy[][] candyRowsCopy = candyRows.clone();
+        Candy[][] candyRowsCopy = deepCopy(candyRows);
 
         Candy candy1 = getCandy(neighbours.location1);
         Candy candy2 = getCandy(neighbours.location2);
@@ -63,6 +71,14 @@ public class GameBoard {
         setCandy(candyRowsCopy, neighbours.location2, candy1);
 
         return GameBoard.create(candyRowsCopy);
+    }
+
+    private Candy[][] deepCopy(Candy[][] original) {
+        final Candy[][] result = new Candy[original.length][];
+        for (int i = 0; i < original.length; i++) {
+            result[i] = Arrays.copyOf(original[i], original[i].length);
+        }
+        return result;
     }
 
     private void setCandy(Candy[][] candyRowsCopy, CandyLocation location, Candy candy) {
@@ -97,6 +113,5 @@ public class GameBoard {
     public String toString() {
         return "GameBoard [candyRows=" + Arrays.toString(candyRows) + "]";
     }
-    
 
 }

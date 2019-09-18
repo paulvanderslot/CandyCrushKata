@@ -8,14 +8,23 @@ public class CandySwapperTest {
 
     @Test
     void swapNeighbours() throws Exception {
-        GameBoard differentColorRow = GameBoard.create(new Candy[][] { { Candy.BLUE, Candy.GREEN, Candy.RED, Candy.YELLOW } });
+        GameBoard gameboard = GameBoard.create(new Candy[][] { { Candy.BLUE, Candy.GREEN, Candy.RED, Candy.YELLOW } });
 
-        CandySwapper candySwapper = new CandySwapper();
         Neighbours neighbours = new Neighbours(new CandyLocation(0, 0), new CandyLocation(0, 1));
-        GameBoard swappedBoard = candySwapper.swap(neighbours, differentColorRow);
+        GameBoard swappedBoard = gameboard.swap(neighbours);
 
         GameBoard expected = GameBoard.create(new Candy[][] { { Candy.GREEN, Candy.BLUE, Candy.RED, Candy.YELLOW } });
         assertThat(swappedBoard).isEqualTo(expected);
-        // assertThat(differentColorRow).isNotEqualTo(expected); //TODO gameboard immutable
+    }
+
+    @Test
+    void swapNeighboursDoesNotChangeOriginal() throws Exception {
+        GameBoard gameboard = GameBoard.create(new Candy[][] { { Candy.BLUE, Candy.GREEN, Candy.RED, Candy.YELLOW } });
+
+        Neighbours neighbours = new Neighbours(new CandyLocation(0, 0), new CandyLocation(0, 1));
+        gameboard.swap(neighbours);
+
+        GameBoard expected = GameBoard.create(new Candy[][] { { Candy.GREEN, Candy.BLUE, Candy.RED, Candy.YELLOW } });
+        assertThat(gameboard).isNotEqualTo(expected);
     }
 }
