@@ -5,9 +5,4 @@ public enum Candy {
     BLUE,
     YELLOW,
     GREEN;
-
-    public boolean canSwap() {
-        return false;
-    }
-
 }
