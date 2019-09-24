@@ -4,14 +4,15 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.IntStream;
 
 public class GameBoard {
 
-    private final Candy[][] candyRows;
+    private final Candy[][] candyMatrix;
 
     private GameBoard(Candy[][] candyRows) {
-        this.candyRows = candyRows;
+        this.candyMatrix = candyRows;
     }
 
     public static GameBoard create(Candy[][] candyRows) {
@@ -29,16 +30,24 @@ public class GameBoard {
     }
 
     private Collection<Neighbours> getNeighbours() {
-        Candy[] firstRow = candyRows[0];
+        return getHorizontalNeighbours();
+    }
 
-        return IntStream.range(0, (firstRow.length - 1)).boxed()
-            .map(colNum -> new Neighbours(new CandyLocation(0, colNum), new CandyLocation(0, colNum + 1)))
+    private List<Neighbours> getHorizontalNeighbours() {
+        return IntStream.range(0, candyMatrix.length).boxed()
+            .flatMap(rowNum -> getNeighBoursForRow(rowNum).stream())
+            .collect(toList());
+    }
+
+    private List<Neighbours> getNeighBoursForRow(int rowNum) {
+        Candy[] candyRow = candyMatrix[rowNum];
+        return IntStream.range(0, (candyRow.length - 1)).boxed()
+            .map(colNum -> new Neighbours(new CandyLocation(rowNum, colNum), new CandyLocation(rowNum, colNum + 1)))
             .collect(toList());
     }
 
     public boolean isCrushPossible() {
-        Candy[] firstRow = candyRows[0];
-        return containsThreeInARow(firstRow);
+        return IntStream.range(0, candyMatrix.length).anyMatch(i -> containsThreeInARow(candyMatrix[i]));
     }
 
     private boolean containsThreeInARow(Candy[] candies) {
@@ -62,7 +71,7 @@ public class GameBoard {
     }
 
     public GameBoard swap(Neighbours neighbours) {
-        Candy[][] candyRowsCopy = deepCopy(candyRows);
+        Candy[][] candyRowsCopy = deepCopy(candyMatrix);
 
         Candy candy1 = getCandy(neighbours.location1);
         Candy candy2 = getCandy(neighbours.location2);
@@ -86,14 +95,14 @@ public class GameBoard {
     }
 
     private Candy getCandy(CandyLocation location) {
-        return candyRows[location.rowNumber][location.columNumber];
+        return candyMatrix[location.rowNumber][location.columNumber];
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + Arrays.deepHashCode(candyRows);
+        result = prime * result + Arrays.deepHashCode(candyMatrix);
         return result;
     }
 
@@ -106,12 +115,12 @@ public class GameBoard {
         if (getClass() != obj.getClass())
             return false;
         GameBoard other = (GameBoard) obj;
-        return Arrays.deepEquals(candyRows, other.candyRows);
+        return Arrays.deepEquals(candyMatrix, other.candyMatrix);
     }
 
     @Override
     public String toString() {
-        return "GameBoard [candyRows=" + Arrays.toString(candyRows) + "]";
+        return "GameBoard [candyRows=" + Arrays.toString(candyMatrix) + "]";
     }
 
 }

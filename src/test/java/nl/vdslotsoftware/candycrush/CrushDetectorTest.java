@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-public class GameBoardTest {
+public class CrushDetectorTest {
 
     @Test
     void givenOneColorRow_aCrushIsPossible() throws Exception {
@@ -33,4 +33,15 @@ public class GameBoardTest {
         assertThat(crushPossible).isEqualTo(true);
     }
 
+    @Test
+    void givenThreeInARowOnSecondRow_aCrushIsPossible() throws Exception {
+        GameBoard oneColorRow = GameBoard.create(new Candy[][] {
+            { Candy.BLUE, Candy.GREEN, Candy.RED, Candy.YELLOW },
+            { Candy.BLUE, Candy.BLUE, Candy.BLUE, Candy.GREEN },
+            { Candy.YELLOW, Candy.GREEN, Candy.RED, Candy.YELLOW } });
+
+        boolean crushPossible = oneColorRow.isCrushPossible();
+
+        assertThat(crushPossible).isEqualTo(true);
+    }
 }
