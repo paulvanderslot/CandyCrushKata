@@ -38,10 +38,6 @@ public class CandyMatrix {
             .collect(toList());
     }
 
-    public Candy getCandy(CandyLocation location) {
-        return state[location.rowNumber][location.columNumber];
-    }
-
     public Collection<Neighbours> getNeighbours() {
         Collection<Neighbours> allNeighbours = new ArrayList<>();
         allNeighbours.addAll(getHorizontalNeighbours());
@@ -71,5 +67,58 @@ public class CandyMatrix {
         return IntStream.range(0, (numerOfColumns - 1)).boxed()
             .map(colNum -> new Neighbours(new CandyLocation(rowNum, colNum), new CandyLocation(rowNum, colNum + 1)))
             .collect(toList());
+    }
+
+    public CandyMatrix swap(Neighbours neighbours) {
+        Candy[][] candyRowsCopy = deepCopy(state);
+
+        Candy candy1 = getCandy(neighbours.location1);
+        Candy candy2 = getCandy(neighbours.location2);
+
+        setCandy(candyRowsCopy, neighbours.location1, candy2);
+        setCandy(candyRowsCopy, neighbours.location2, candy1);
+
+        return new CandyMatrix(candyRowsCopy);
+    }
+
+    private Candy[][] deepCopy(Candy[][] original) {
+        final Candy[][] result = new Candy[original.length][];
+        for (int i = 0; i < original.length; i++) {
+            result[i] = Arrays.copyOf(original[i], original[i].length);
+        }
+        return result;
+    }
+
+    private void setCandy(Candy[][] candyRowsCopy, CandyLocation location, Candy candy) {
+        candyRowsCopy[location.rowNumber][location.columNumber] = candy;
+    }
+
+    private Candy getCandy(CandyLocation location) {
+        return state[location.rowNumber][location.columNumber];
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Arrays.deepHashCode(state);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        CandyMatrix other = (CandyMatrix) obj;
+        return Arrays.deepEquals(state, other.state);
+    }
+
+    @Override
+    public String toString() {
+        return "GameBoard [candyRows=" + Arrays.deepToString(state) + "]";
     }
 }

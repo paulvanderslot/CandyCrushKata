@@ -7,27 +7,27 @@ import org.junit.jupiter.api.Test;
 
 public class CandySwapperTest {
 
-    private GameBoard gameboard;
+    private CandyMatrix candyMatrix;
     private Neighbours swappingNeighbours;
 
     @BeforeEach
     void before() {
-        gameboard = GameBoard.create(new Candy[][] { { Candy.BLUE, Candy.GREEN, Candy.RED, Candy.YELLOW } });
+        candyMatrix = new CandyMatrix(new Candy[][] { { Candy.BLUE, Candy.GREEN, Candy.RED, Candy.YELLOW } });
         swappingNeighbours = new Neighbours(new CandyLocation(0, 0), new CandyLocation(0, 1));
     }
 
     @Test
     void swapNeighbours() throws Exception {
-        GameBoard swappedBoard = gameboard.swap(swappingNeighbours);
+        CandyMatrix swappedBoard = candyMatrix.swap(swappingNeighbours);
 
-        GameBoard expected = GameBoard.create(new Candy[][] { { Candy.GREEN, Candy.BLUE, Candy.RED, Candy.YELLOW } });
+        CandyMatrix expected = new CandyMatrix(new Candy[][] { { Candy.GREEN, Candy.BLUE, Candy.RED, Candy.YELLOW } });
         assertThat(swappedBoard).isEqualTo(expected);
     }
 
     @Test
     void swapNeighboursDoesNotChangeOriginal() throws Exception {
-        GameBoard swappedBoard = gameboard.swap(swappingNeighbours);
+        CandyMatrix swappedBoard = candyMatrix.swap(swappingNeighbours);
 
-        assertThat(gameboard).isNotEqualTo(swappedBoard);
+        assertThat(candyMatrix).isNotEqualTo(swappedBoard);
     }
 }
