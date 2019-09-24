@@ -44,4 +44,25 @@ public class CrushDetectorTest {
 
         assertThat(crushPossible).isEqualTo(true);
     }
+
+    @Test
+    void givenThreeInAColumn_aCrushIsPossible() throws Exception {
+        GameBoard oneColorColumn =
+            GameBoard.create(new Candy[][] { { Candy.BLUE }, { Candy.BLUE }, { Candy.BLUE }, { Candy.BLUE } });
+
+        boolean crushPossible = oneColorColumn.isCrushPossible();
+
+        assertThat(crushPossible).isEqualTo(true);
+    }
+
+    @Test
+    void givenAllDifferentColorsColumn_aCrushIsNotPossible() throws Exception {
+        GameBoard differentColorColumn =
+            GameBoard.create(new Candy[][] { { Candy.YELLOW }, { Candy.GREEN }, { Candy.RED }, { Candy.YELLOW } });
+
+        boolean crushPossible = differentColorColumn.isCrushPossible();
+
+        assertThat(crushPossible).isEqualTo(false);
+    }
+
 }
