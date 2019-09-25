@@ -10,9 +10,9 @@ import java.util.stream.IntStream;
 
 public class CandyMatrix {
 
-    Candy[][] state;
-    private int numberOfRows;
-    private int numerOfColumns;
+    private final Candy[][] state;
+    private final int numberOfRows;
+    private final int numerOfColumns;
 
     public CandyMatrix(Candy[][] candyMatrix) {
         this.state = candyMatrix;

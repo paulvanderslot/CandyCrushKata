@@ -64,4 +64,16 @@ public class CandyCrushGameAcceptenceTest {
         assertThat(gameboard.isMovePossible()).isTrue();
     }
 
+    @Test
+    void horizontalSwapMakesVerticalCrush_moveIsPossible() throws Exception {
+        Candy[][] candyMatrix = {
+            { Candy.YELLOW, Candy.BLUE, Candy.RED, Candy.RED },
+            { Candy.YELLOW, Candy.GREEN, Candy.RED, Candy.RED },
+            { Candy.GREEN, Candy.YELLOW, Candy.BLUE, Candy.BLUE },
+            { Candy.BLUE, Candy.RED, Candy.YELLOW, Candy.BLUE } };
+        GameBoard gameboard = GameBoard.create(candyMatrix);
+
+        assertThat(gameboard.isMovePossible()).isTrue();
+    }
+
 }

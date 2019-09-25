@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-public class CrushDetectorTest {
+public class GameBoardTest {
 
     @Test
     void givenOneColorRow_aCrushIsPossible() throws Exception {

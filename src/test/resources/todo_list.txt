@@ -2,4 +2,4 @@
 / can swap multiple rows
 / can swap single column
 / can swap multiple columns
-x can swap in row, but match in column
+/ can swap in row, but match in column
