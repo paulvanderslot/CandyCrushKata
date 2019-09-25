@@ -25,13 +25,13 @@ public class GameBoard {
         return isCrushPossible(newState);
     }
 
+    public boolean isCrushPossible() {
+        return isCrushPossible(candyMatrix);
+    }
+
     private boolean isCrushPossible(CandyMatrix newState) {
         return newState.getRows().stream().anyMatch(this::containsThreeInARow)
             || newState.getColumns().stream().anyMatch(this::containsThreeInARow);
-    }
-
-    public boolean isCrushPossible() {
-        return isCrushPossible(candyMatrix);
     }
 
     private boolean containsThreeInARow(List<Candy> candies) {
