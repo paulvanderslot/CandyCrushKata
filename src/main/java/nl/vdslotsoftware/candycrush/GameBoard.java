@@ -1,18 +1,19 @@
 package nl.vdslotsoftware.candycrush;
 
 import java.util.Collection;
-import java.util.List;
 
 public class GameBoard {
 
     private final CandyMatrix candyMatrix;
+    private final CrushDetector crushDetector;
 
-    private GameBoard(CandyMatrix candyMatrix) {
+    private GameBoard(CandyMatrix candyMatrix, CrushDetector crushDetector) {
         this.candyMatrix = candyMatrix;
+        this.crushDetector = crushDetector;
     }
 
     public static GameBoard create(Candy[][] candyMatrix) {
-        return new GameBoard(new CandyMatrix(candyMatrix));
+        return new GameBoard(new CandyMatrix(candyMatrix), new CrushDetector());
     }
 
     public boolean isMovePossible() {
@@ -22,36 +23,6 @@ public class GameBoard {
 
     private boolean isCrushPossibleAfterSwap(Neighbours neighbours) {
         CandyMatrix newState = candyMatrix.swap(neighbours);
-        return isCrushPossible(newState);
+        return crushDetector.isCrushPossible(newState);
     }
-
-    public boolean isCrushPossible() {
-        return isCrushPossible(candyMatrix);
-    }
-
-    private boolean isCrushPossible(CandyMatrix newState) {
-        return newState.getRows().stream().anyMatch(this::containsThreeInARow)
-            || newState.getColumns().stream().anyMatch(this::containsThreeInARow);
-    }
-
-    private boolean containsThreeInARow(List<Candy> candies) {
-        int candyCounter = 1;
-        Candy previous = null;
-
-        for (Candy candy : candies) {
-            if (previous != null && previous.equals(candy)) {
-                candyCounter++;
-                if (candyCounter == 3) {
-                    return true;
-                }
-            }
-            else {
-                candyCounter = 1;
-            }
-            previous = candy;
-        }
-
-        return false;
-    }
-
 }

@@ -7,62 +7,73 @@ import org.junit.jupiter.api.Test;
 public class GameBoardTest {
 
     @Test
-    void givenOneColorRow_aCrushIsPossible() throws Exception {
-        GameBoard oneColorRow = GameBoard.create(new Candy[][] { { Candy.BLUE, Candy.BLUE, Candy.BLUE, Candy.BLUE } });
+    void singleRowBoard_moveIsPossible() throws Exception {
+        Candy[][] candyMatrix = { { Candy.BLUE, Candy.GREEN, Candy.BLUE, Candy.BLUE } };
+        GameBoard gameboard = GameBoard.create(candyMatrix);
 
-        boolean crushPossible = oneColorRow.isCrushPossible();
-
-        assertThat(crushPossible).isEqualTo(true);
+        assertThat(gameboard.isMovePossible()).isTrue();
     }
 
     @Test
-    void givenAllDifferentColorsRow_aCrushIsNotPossible() throws Exception {
-        GameBoard differentColorRow = GameBoard.create(new Candy[][] { { Candy.BLUE, Candy.GREEN, Candy.RED, Candy.YELLOW } });
+    void singleRowBoard_moveIsNotPossible() throws Exception {
+        Candy[][] candyMatrix = { { Candy.BLUE, Candy.GREEN, Candy.GREEN, Candy.BLUE } };
+        GameBoard gameboard = GameBoard.create(candyMatrix);
 
-        boolean crushPossible = differentColorRow.isCrushPossible();
-
-        assertThat(crushPossible).isEqualTo(false);
+        assertThat(gameboard.isMovePossible()).isFalse();
     }
 
     @Test
-    void givenThreeInARow_aCrushIsPossible() throws Exception {
-        GameBoard threeInARow = GameBoard.create(new Candy[][] { { Candy.BLUE, Candy.BLUE, Candy.BLUE, Candy.YELLOW } });
+    void multiRowBoard_moveIsPossible() throws Exception {
+        Candy[][] candyMatrix = {
+            { Candy.YELLOW, Candy.GREEN, Candy.YELLOW, Candy.RED },
+            { Candy.BLUE, Candy.GREEN, Candy.BLUE, Candy.BLUE },
+            { Candy.BLUE, Candy.YELLOW, Candy.YELLOW, Candy.RED } };
+        GameBoard gameboard = GameBoard.create(candyMatrix);
 
-        boolean crushPossible = threeInARow.isCrushPossible();
-
-        assertThat(crushPossible).isEqualTo(true);
+        assertThat(gameboard.isMovePossible()).isTrue();
     }
 
     @Test
-    void givenThreeInARowOnSecondRow_aCrushIsPossible() throws Exception {
-        GameBoard oneColorRow = GameBoard.create(new Candy[][] {
-            { Candy.BLUE, Candy.GREEN, Candy.RED, Candy.YELLOW },
-            { Candy.BLUE, Candy.BLUE, Candy.BLUE, Candy.GREEN },
-            { Candy.YELLOW, Candy.GREEN, Candy.RED, Candy.YELLOW } });
+    void multiRowBoard_moveIsNotPossible() throws Exception {
+        Candy[][] candyMatrix = {
+            { Candy.YELLOW, Candy.GREEN, Candy.YELLOW, Candy.RED },
+            { Candy.RED, Candy.GREEN, Candy.BLUE, Candy.BLUE },
+            { Candy.BLUE, Candy.YELLOW, Candy.YELLOW, Candy.RED } };
+        GameBoard gameboard = GameBoard.create(candyMatrix);
 
-        boolean crushPossible = oneColorRow.isCrushPossible();
-
-        assertThat(crushPossible).isEqualTo(true);
+        assertThat(gameboard.isMovePossible()).isFalse();
     }
 
     @Test
-    void givenThreeInAColumn_aCrushIsPossible() throws Exception {
-        GameBoard oneColorColumn =
-            GameBoard.create(new Candy[][] { { Candy.BLUE }, { Candy.BLUE }, { Candy.BLUE }, { Candy.BLUE } });
+    void singleColumnBoard_moveIsPossible() throws Exception {
+        Candy[][] candyMatrix = { { Candy.BLUE }, { Candy.GREEN }, { Candy.BLUE }, { Candy.BLUE } };
+        GameBoard gameboard = GameBoard.create(candyMatrix);
 
-        boolean crushPossible = oneColorColumn.isCrushPossible();
-
-        assertThat(crushPossible).isEqualTo(true);
+        assertThat(gameboard.isMovePossible()).isTrue();
     }
 
     @Test
-    void givenAllDifferentColorsColumn_aCrushIsNotPossible() throws Exception {
-        GameBoard differentColorColumn =
-            GameBoard.create(new Candy[][] { { Candy.YELLOW }, { Candy.GREEN }, { Candy.RED }, { Candy.YELLOW } });
+    void multiColumnBoard_moveIsPossible() throws Exception {
+        Candy[][] candyMatrix = {
+            { Candy.YELLOW, Candy.BLUE, Candy.RED, Candy.RED },
+            { Candy.YELLOW, Candy.GREEN, Candy.YELLOW, Candy.RED },
+            { Candy.GREEN, Candy.GREEN, Candy.BLUE, Candy.BLUE },
+            { Candy.BLUE, Candy.YELLOW, Candy.YELLOW, Candy.RED } };
+        GameBoard gameboard = GameBoard.create(candyMatrix);
 
-        boolean crushPossible = differentColorColumn.isCrushPossible();
+        assertThat(gameboard.isMovePossible()).isTrue();
+    }
 
-        assertThat(crushPossible).isEqualTo(false);
+    @Test
+    void horizontalSwapMakesVerticalCrush_moveIsPossible() throws Exception {
+        Candy[][] candyMatrix = {
+            { Candy.YELLOW, Candy.BLUE, Candy.RED, Candy.RED },
+            { Candy.YELLOW, Candy.GREEN, Candy.RED, Candy.RED },
+            { Candy.GREEN, Candy.YELLOW, Candy.BLUE, Candy.BLUE },
+            { Candy.BLUE, Candy.RED, Candy.YELLOW, Candy.BLUE } };
+        GameBoard gameboard = GameBoard.create(candyMatrix);
+
+        assertThat(gameboard.isMovePossible()).isTrue();
     }
 
 }
