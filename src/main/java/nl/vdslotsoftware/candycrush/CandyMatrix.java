@@ -70,15 +70,15 @@ public class CandyMatrix {
     }
 
     public CandyMatrix swap(Neighbours neighbours) {
-        Candy[][] candyRowsCopy = deepCopy(state);
+        Candy[][] candyStateCopy = deepCopy(state);
 
         Candy candy1 = getCandy(neighbours.location1);
         Candy candy2 = getCandy(neighbours.location2);
 
-        setCandy(candyRowsCopy, neighbours.location1, candy2);
-        setCandy(candyRowsCopy, neighbours.location2, candy1);
+        setCandy(candyStateCopy, neighbours.location1, candy2);
+        setCandy(candyStateCopy, neighbours.location2, candy1);
 
-        return new CandyMatrix(candyRowsCopy);
+        return new CandyMatrix(candyStateCopy);
     }
 
     private Candy[][] deepCopy(Candy[][] original) {
@@ -89,8 +89,8 @@ public class CandyMatrix {
         return result;
     }
 
-    private void setCandy(Candy[][] candyRowsCopy, CandyLocation location, Candy candy) {
-        candyRowsCopy[location.rowNumber][location.columNumber] = candy;
+    private void setCandy(Candy[][] candyState, CandyLocation location, Candy candy) {
+        candyState[location.rowNumber][location.columNumber] = candy;
     }
 
     private Candy getCandy(CandyLocation location) {
